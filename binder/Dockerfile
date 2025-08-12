@@ -1,24 +1,22 @@
 FROM jupyter/base-notebook
 
-# Install .NET SDK
-# RUN wget https://dot.net/v1/dotnet-install.sh \
-#     && chmod +x dotnet-install.sh \
-#     && ./dotnet-install.sh -c 8.0 \
-#     && ln -s /root/.dotnet/dotnet /usr/local/bin/dotnet
+# Install ICU library for .NET globalization support
+USER root
+RUN apt-get update && apt-get install -y libicu-dev
+USER $NB_USER
 
+# Install .NET SDK to jovyan's home directory
 RUN wget https://dot.net/v1/dotnet-install.sh \
     && chmod +x dotnet-install.sh \
-    && ./dotnet-install.sh -c 8.0
+    && ./dotnet-install.sh -c 8.0 --install-dir /home/jovyan/.dotnet
 
 ENV PATH="/home/jovyan/.dotnet:${PATH}"
 
-# Set up environment so dotnet is on PATH
-# ENV PATH="/root/.dotnet:${PATH}"
+# Install .NET Interactive as a global tool for jovyan
+RUN /home/jovyan/.dotnet/dotnet tool install --global Microsoft.dotnet-interactive \
+    && /home/jovyan/.dotnet/tools/dotnet-interactive jupyter install
 
-# Install .NET Interactive
-RUN dotnet tool install --global Microsoft.dotnet-interactive \
-    && dotnet interactive jupyter install
+ENV PATH="/home/jovyan/.dotnet/tools:${PATH}"
 
-# (Optional) Copy your postBuild script if you still need it
-# COPY postBuild /tmp/postBuild
-# RUN chmod +x /tmp/postBuild && /tmp/postBuild
+WORKDIR /home/jovyan
+EXPOSE 8888
