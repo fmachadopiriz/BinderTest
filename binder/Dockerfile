@@ -8,7 +8,7 @@ USER $NB_USER
 # Install .NET SDK to jovyan's home directory
 RUN wget https://dot.net/v1/dotnet-install.sh \
     && chmod +x dotnet-install.sh \
-    && ./dotnet-install.sh -c 8.0 --install-dir /home/jovyan/.dotnet
+    && ./dotnet-install.sh -c 7.0 --install-dir /home/jovyan/.dotnet
 
 ENV PATH="/home/jovyan/.dotnet:${PATH}"
 
