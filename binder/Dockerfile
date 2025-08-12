@@ -22,3 +22,5 @@ RUN export DOTNET_ROOT="/home/jovyan/.dotnet" && \
 
 WORKDIR /home/jovyan
 EXPOSE 8888
+
+COPY . ${HOME}
