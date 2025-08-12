@@ -13,7 +13,7 @@ RUN wget https://dot.net/v1/dotnet-install.sh \
 ENV PATH="/home/jovyan/.dotnet:${PATH}"
 
 # Install .NET Interactive as a global tool for jovyan
-RUN /home/jovyan/.dotnet/dotnet tool install --global Microsoft.dotnet-interactive \
+RUN /home/jovyan/.dotnet/dotnet tool install --global Microsoft.dotnet-interactive --version 1.0.431302 \
     && /home/jovyan/.dotnet/tools/dotnet-interactive jupyter install
 
 ENV PATH="/home/jovyan/.dotnet/tools:${PATH}"
